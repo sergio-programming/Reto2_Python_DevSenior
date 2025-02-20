@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from datetime import datetime
 from textwrap import dedent
+import math
 
 #Clases abstractas
 class Persona(ABC):
@@ -14,21 +15,13 @@ class Persona(ABC):
     def mostrarInformacion(self):
         pass
     
-    @abstractmethod
-    def registrar(self):
-        pass
-    
 class Mascota(ABC):
-    def __init__(self, nombre, especie, raza, edad, nombrePropietario):
+    def __init__(self, nombre, especie, raza, edad):
         self._nombre = nombre
         self._especie = especie
         self._raza = raza
         self._edad = edad
         self._historialCitas = []
-        
-    @abstractmethod
-    def actualizar(self):
-        pass
     
     @abstractmethod
     def agregarAlHistorial(self):
@@ -39,10 +32,10 @@ class Cita(ABC):
         self._fecha = fecha
         self._hora = hora
         self._servicio = servicio
-        self._veterinario
+        self._veterinario = veterinario
         
     @abstractmethod
-    def actualizarCita(self, **kwargs):
+    def actualizar(self, **kwargs):
         pass
     
 #Definicion de subclases
@@ -60,8 +53,18 @@ class Cliente(Persona):
         Nombre del cliente: {self._nombre}
         Telefono: {self._telefono}
         Direccion: {self._direccion}
-        Mascotas: {self._mascotas}
         """)
+        if not self._mascotas:
+            print("El cliente por el momento no tiene mascostas registradas")
+        else:
+            for i, mascota in enumerate(self._mascotas, start=1):
+                return dedent(f"""
+                Mascota # {i}
+                Nombre de la mascota: {mascota.nombre}
+                Especie: {mascota.especie}
+                Raza: {mascota.raza}
+                edad: {mascota.edad}
+                """)
         
 class Veterinario(Persona):
     def __init__(self, id, nombre, telefono, direccion, especialidad):
@@ -76,14 +79,14 @@ class Veterinario(Persona):
         Especialidad: {self._especialidad}
         """)
         
-class RegistroMascota(Mascota):
+class GestionMascota(Mascota):
     def agregarAlHistorial(self, detallesServicio):
-        self.historialCitas.append(detallesServicio)
+        self._historialCitas.append(detallesServicio)
         
     def obtenerHistorial(self):
-        return self.historialCitas
+        return self._historialCitas
     
-class CitaMascota(Cita):
+class GestionCita(Cita):
     def actualizar(self, **kwargs):
         for clave, valor in kwargs.items():
             if hasattr(self, clave):
@@ -92,12 +95,11 @@ class CitaMascota(Cita):
 class GestionVeterinaria:
     def __init__(self):
         self.clientes = []
-        self.mascotas = []
-        self.veterinarios = []
-            
+        self.veterinarios = []            
         
     def registrarCliente(self):
         while True:
+            print()
             print("#"*30)
             print("MODULO DE REGISTRO DE CLIENTE")
             print("#"*30)
@@ -107,12 +109,12 @@ class GestionVeterinaria:
                 telefono = input("Ingrese el telefono del cliente: ").strip()
                 direccion = input("Ingrese la d del cliente: ").strip()
             
-                if nombre is None or telefono is None or direccion is None:
+                if not nombre or not telefono or not direccion:
                     raise ValueError("\nTodos los campos son obligatorios. Por favor intente de nuevo")
 
                 cliente = Cliente(id, nombre, telefono, direccion)
                 self.clientes.append(cliente)
-                print("Cliente registrado exitosamente")
+                print("Cliente registrado exitosamente.")
                 input("Presione <Enter> para continuar")
                 break
                 
@@ -122,42 +124,44 @@ class GestionVeterinaria:
             
     def actualizarCliente(self):
         cliente_a_modificar = None
+        indice = 0
         while True:
+            print()
             print("#"*30)
             print("MODULO DE ACTUALIZACIÓN DE CLIENTE")
             print("#"*30)
-            try:
-                while True:
-                    try:
-                        id = int(input("\nIngrese el número de id del cliente: "))
-                        for cliente in self.clientes:
-                            if cliente.id == id:
-                                cliente_a_modificar = cliente
-                                break
+            while True:
+                try:
+                    idCliente = int(input("\nIngrese el número de id del cliente: ").strip())
+                    break                        
+                except ValueError:
+                    print("\nEl tipo de dato ingresado es invalido. Por favor intente de nuevo.")
                         
-                        if cliente_a_modificar:
-                            nuevoNombre = input("Ingrese el nombre del cliente: ").strip()
-                            if nuevoNombre is None:
-                                nuevoNombre = cliente_a_modificar._nombre
-                                    
-                            nuevoTelefono = input("Ingrese el telefono del cliente: ").strip()
-                            if nuevoTelefono is None:
-                                nuevoTelefono = cliente_a_modificar._telefono
-                                    
-                            nuevaDireccion = input("Ingrese la dirección del cliente: ").strip()
-                            if nuevaDireccion is None:
-                                nuevaDireccion = cliente_a_modificar._direccion
-                                                              
-                            
-                            
-                        else:
-                            print("\nNo existe un cliente con el ID ingresado. Por favor intente de nuevo.")
-                            input("Presione <Enter> para continuar")
-                    except ValueError:
-                        print("\nDebe ingresar un número valido. Por favor intente de nuevo.")
-                        input("Presione <Enter> para continuar")
-                        
+            for i, cliente in enumerate(self.clientes):
+                if cliente._id == idCliente:
+                    cliente_a_modificar = cliente
+                    indice = i
+                    break
                 
+            if cliente_a_modificar is None:
+                print(f"\nNo existe un cliente con el ID {idCliente}. Por favor intente nuevamente.")
+                continue
+
+            nuevoNombre = input("\nPor favor actualice el nombre: ").strip()
+            if not nuevoNombre:
+                nuevoNombre = cliente_a_modificar._nombre
                 
-            except print(0):
-                pass
+            nuevoTelefono = input("Por favor actualice el telefono: ").strip()
+            if not nuevoTelefono:
+                nuevoTelefono = cliente_a_modificar._telefono
+                    
+            nuevaDireccion = input("Por favor actualice la direccion: ").strip()
+            if not nuevaDireccion:
+                nuevaDireccion = cliente_a_modificar._direccion
+                    
+            self.clientes[indice] = Cliente(idCliente, nuevoNombre, nuevoTelefono, nuevaDireccion)
+            print("Cliente actualizado exitosamente.") 
+            input("Presione <Enter> para continuar")
+            break  
+            
+
