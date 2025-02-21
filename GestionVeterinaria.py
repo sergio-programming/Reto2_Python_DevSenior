@@ -107,7 +107,7 @@ class GestionVeterinaria:
                 id = len(self.clientes) + 1
                 nombre = input("\nIngrese el nombre del cliente: ").strip()
                 telefono = input("Ingrese el telefono del cliente: ").strip()
-                direccion = input("Ingrese la d del cliente: ").strip()
+                direccion = input("Ingrese la dirección del cliente: ").strip()
             
                 if not nombre or not telefono or not direccion:
                     raise ValueError("\nTodos los campos son obligatorios. Por favor intente de nuevo")
@@ -165,3 +165,77 @@ class GestionVeterinaria:
             break  
             
 
+    def registrarVeterinario(self):
+        while True:
+            print()
+            print("#"*30)
+            print("MODULO DE REGISTRO DE VETERINARIO")
+            print("#"*30)
+            try:
+                id = len(self.veterinarios) + 1
+                nombre = input("\nIngrese el nombre del veterinario: ").strip()
+                telefono = input("Ingrese el telefono del veterinario: ").strip()
+                direccion = input("Ingrese la direccion del veterinario: ").strip()
+                especialidad = input("Ingrese la especialidad del veterinario: ").strip()
+            
+                if not nombre or not telefono or not direccion or not especialidad:
+                    raise ValueError("\nTodos los campos son obligatorios. Por favor intente de nuevo")
+
+                veterinario = Veterinario(id, nombre, telefono, direccion, especialidad)
+                self.veterinarios.append(veterinario)
+                print("Cliente registrado exitosamente.")
+                input("Presione <Enter> para continuar")
+                break
+                
+            except ValueError as e:
+                print(f"Error: {e}")
+                input("Presione <Enter> para continuar")
+                
+    def actualizarVeterinario(self):
+        veterinario_a_modificar = None
+        indice = 0
+        while True:
+            print()
+            print("#"*30)
+            print("MODULO DE ACTUALIZACIÓN DE VETERINARIO")
+            print("#"*30)
+            while True:
+                try:
+                    idVeterinario = int(input("\nIngrese el número de id del veterinario: ").strip())
+                    break                        
+                except ValueError:
+                    print("\nEl tipo de dato ingresado es invalido. Por favor intente de nuevo.")
+                        
+            for i, veterinario in enumerate(self.veterinarios):
+                if veterinario._id == idVeterinario:
+                    veterinario_a_modificar = veterinario
+                    indice = i
+                    break
+                
+            if veterinario_a_modificar is None:
+                print(f"\nNo existe un cliente con el ID {idVeterinario}. Por favor intente nuevamente.")
+                continue
+
+            nuevoNombre = input("\nPor favor actualice el nombre: ").strip()
+            if not nuevoNombre:
+                nuevoNombre = veterinario_a_modificar._nombre
+                
+            nuevoTelefono = input("Por favor actualice el telefono: ").strip()
+            if not nuevoTelefono:
+                nuevoTelefono = veterinario_a_modificar._telefono
+                    
+            nuevaDireccion = input("Por favor actualice la direccion: ").strip()
+            if not nuevaDireccion:
+                nuevaDireccion = veterinario_a_modificar._direccion
+                    
+            nuevaEspecialidad = input("Por favor actualice la especialidad: ").strip()
+            if not nuevaEspecialidad:
+                nuevaEspecialidad = veterinario_a_modificar._especialidad
+                    
+            self.veterinarios[indice] = Veterinario(idVeterinario, nuevoNombre, nuevoTelefono, nuevaDireccion, nuevaEspecialidad)
+            print("Veterinario actualizado exitosamente.") 
+            input("Presione <Enter> para continuar")
+            break
+        
+        
+        
