@@ -28,40 +28,40 @@ def menu():
         
         try:
             opcion = int(input("Por favor ingrese una opción: ").strip())
-            break
         except ValueError:
             print("El tipo de dato ingresado no es valido. Por favor intente nuevamente")
             input("Presione <Enter> para continuar")
+            continue
             
         if opcion == 1:
-            GestionVeterinaria.registrarMascota()
+            GestionVeterinaria.registrarCliente(clientes)
         
         elif opcion == 2:
-            pass
+            GestionVeterinaria.mostrarClientes(clientes)
         
         elif opcion == 3:
-            GestionVeterinaria.actualizarCliente()
+            GestionVeterinaria.actualizarCliente(clientes)
         
         elif opcion == 4:
-            GestionVeterinaria.registrarMascota()
+            GestionVeterinaria.registrarMascota(clientes)
         
         elif opcion == 5:
-            GestionVeterinaria.actualizarMascota()
+            GestionVeterinaria.actualizarMascota(clientes)
         
         elif opcion == 6:
-            GestionVeterinaria.registrarVeterinario()
+            GestionVeterinaria.registrarVeterinario(veterinarios)
         
         elif opcion == 7:
-            pass
+            GestionVeterinaria.mostrarVeterinarios(veterinarios)
         
         elif opcion == 8:
-            GestionVeterinaria.actualizarVeterinario()
+            GestionVeterinaria.actualizarVeterinario(veterinarios)
         
         elif opcion == 9:
-            GestionVeterinaria.programarCita()
+            GestionVeterinaria.programarCita(clientes, veterinarios)
         
         elif opcion == 10:
-            pass
+            GestionVeterinaria.actualizarCita(clientes, veterinarios)
         
         elif opcion == 11:
             print("Gracias por usar nuestra plataforma. Hasta pronto!!")
