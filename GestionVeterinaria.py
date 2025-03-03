@@ -135,6 +135,7 @@ class GestionVeterinaria:
         
         if not clientes:
             print("\nNo hay clientes registrados actualmente.")    
+
             
         else:
             for cliente in clientes:
@@ -145,46 +146,42 @@ class GestionVeterinaria:
     
     @staticmethod        
     def actualizarCliente(clientes):
-        cliente_a_modificar = None
-        indice = 0
-        while True:
-            print()
-            print("#"*30)
-            print("MODULO DE ACTUALIZACIÓN DE CLIENTE")
-            print("#"*30)
-            while True:
-                try:
-                    idCliente = int(input("\nIngrese el número de id del cliente: ").strip())
-                    break                        
-                except ValueError:
-                    print("\nEl tipo de dato ingresado es invalido. Por favor intente de nuevo.")
-                        
-            for i, cliente in enumerate(clientes):
-                if cliente._id == idCliente:
-                    cliente_a_modificar = cliente
-                    indice = i
-                    break
+        print()
+        print("#"*30)
+        print("MODULO DE ACTUALIZACIÓN DE CLIENTE")
+        print("#"*30)
+        
+        if not clientes:
+            print("\nNo hay clientes registrados actualmente.")
+            input("Presione <Enter> para continuar")
+            return
                 
+        while True:
+            try:
+                idCliente = int(input("\nIngrese el número de id del cliente: ").strip())                        
+            except ValueError:
+                print("\nEl tipo de dato ingresado es invalido. Por favor intente de nuevo.")
+                continue
+            
+            cliente_a_modificar = next((c for c in clientes if c._id == idCliente), None)
+                     
             if cliente_a_modificar is None:
                 print(f"\nNo existe un cliente con el ID {idCliente}. Por favor intente de nuevo.")
                 continue
+            
+            break
 
-            nuevoNombre = input("\nPor favor actualice el nombre: ").strip()
-            if not nuevoNombre:
-                nuevoNombre = cliente_a_modificar._nombre
-                
-            nuevoTelefono = input("Por favor actualice el telefono: ").strip()
-            if not nuevoTelefono:
-                nuevoTelefono = cliente_a_modificar._telefono
-                    
-            nuevaDireccion = input("Por favor actualice la direccion: ").strip()
-            if not nuevaDireccion:
-                nuevaDireccion = cliente_a_modificar._direccion
-                    
-            clientes[indice] = Cliente(idCliente, nuevoNombre, nuevoTelefono, nuevaDireccion)
-            print("\nCliente actualizado exitosamente.") 
-            input("Presione <Enter> para continuar")
-            break  
+        nuevoNombre = input("\nPor favor actualice el nombre: ").strip() or cliente_a_modificar._nombre     
+        nuevoTelefono = input("Por favor actualice el telefono: ").strip() or cliente_a_modificar._telefono            
+        nuevaDireccion = input("Por favor actualice la direccion: ").strip() or cliente_a_modificar._direccion
+        
+        cliente_a_modificar._nombre = nuevoNombre
+        cliente_a_modificar._telefono = nuevoTelefono
+        cliente_a_modificar._direccion = nuevaDireccion 
+         
+        print("\nCliente actualizado exitosamente.")    
+        input("Presione <Enter> para continuar")
+             
             
     @staticmethod        
     def registrarVeterinario(veterinarios):
@@ -232,46 +229,41 @@ class GestionVeterinaria:
      
     @staticmethod           
     def actualizarVeterinario(veterinarios):
-        veterinario_a_modificar = None
-        indice = 0
+        print()
+        print("#"*30)
+        print("MODULO DE ACTUALIZACIÓN DE VETERINARIO")
+        print("#"*30)
+        
+        if not veterinarios:
+            print("\nNo hay veterinarios registrados actualmente.")
+            input("Presione <Enter> para continuar")
+            return            
+        
         while True:
-            print()
-            print("#"*30)
-            print("MODULO DE ACTUALIZACIÓN DE VETERINARIO")
-            print("#"*30)
-            while True:
-                try:
-                    idVeterinario = int(input("\nIngrese el número de id del veterinario: ").strip())
-                    break                        
-                except ValueError:
-                    print("\nEl tipo de dato ingresado es invalido. Por favor intente de nuevo.")
-                        
-            for i, veterinario in enumerate(veterinarios):
-                if veterinario._id == idVeterinario:
-                    veterinario_a_modificar = veterinario
-                    indice = i
-                    break
-                
+            try:
+                idVeterinario = int(input("\nIngrese el número de id del veterinario: ").strip())                       
+            except ValueError:
+                print("\nEl tipo de dato ingresado es invalido. Por favor intente de nuevo.")
+                    
+            veterinario_a_modificar = next((v for v in veterinarios if v._id == idVeterinario), None)
+            
             if veterinario_a_modificar is None:
                 print(f"\nNo existe un veterinario con el ID {idVeterinario}. Por favor intente de nuevo.")
                 continue
-
-            nuevoNombre = input("\nPor favor actualice el nombre: ").strip()
-            if not nuevoNombre:
-                nuevoNombre = veterinario_a_modificar._nombre
-                
-            nuevoTelefono = input("Por favor actualice el telefono: ").strip()
-            if not nuevoTelefono:
-                nuevoTelefono = veterinario_a_modificar._telefono
-                    
-            nuevaDireccion = input("Por favor actualice la direccion: ").strip()
-            if not nuevaDireccion:
-                nuevaDireccion = veterinario_a_modificar._direccion
-                    
-            veterinarios[indice] = Veterinario(idVeterinario, nuevoNombre, nuevoTelefono, nuevaDireccion, veterinario_a_modificar._especialidad)
-            print("\nVeterinario actualizado exitosamente.") 
-            input("Presione <Enter> para continuar")
+            
             break
+
+        nuevoNombre = input("\nPor favor actualice el nombre: ").strip() or veterinario_a_modificar._nombre            
+        nuevoTelefono = input("Por favor actualice el telefono: ").strip() or veterinario_a_modificar._telefono       
+        nuevaDireccion = input("Por favor actualice la direccion: ").strip() or veterinario_a_modificar._direccion
+                
+        veterinario_a_modificar._nombre = nuevoNombre
+        veterinario_a_modificar._tele = nuevoNombre
+        veterinario_a_modificar._nombre = nuevoNombre
+        
+        print("\nVeterinario actualizado exitosamente.") 
+        input("Presione <Enter> para continuar")
+        
     
     @staticmethod
     def registrarMascota(clientes):
@@ -295,7 +287,7 @@ class GestionVeterinaria:
                             raise ValueError(f"El número ingresado no es valido. Por favor intente de nuevo.")
                         break
                     except ValueError as e:
-                        print(f"Error: {e}")            
+                        print(f"Error: {e}")                
 
                 for i in range(nroMascotas):
                     while True:
@@ -328,112 +320,104 @@ class GestionVeterinaria:
               
     @staticmethod
     def actualizarMascota(clientes):
-        while True:
-            mascota_a_modificar = None
-            indice = 0
-            print()
-            print("#"*30)
-            print("MODULO DE ACTUALIZACIÓN DE MASCOTA")
-            print("#"*30)
+        print()
+        print("#"*30)
+        print("MODULO DE ACTUALIZACIÓN DE MASCOTA")
+        print("#"*30)
+        
+        try:
+            idCliente = int(input("Ingrese el id del cliente dueño de la mascota: ").strip())
+            cliente = next((c for c in clientes if idCliente == c._id), None)
+                            
+            if not cliente:
+                raise ValueError(f"No existe un cliente con el ID {idCliente}. Por favor intente nuevamente.")
             
-            try:
-                idCliente = int(input("Ingrese el id del cliente dueño de la mascota: ").strip())
-                cliente = next((c for c in clientes if idCliente == c._id), None)
+            if not cliente._mascotas:
+                raise ValueError(f"El cliente {cliente._nombre} no tiene mascotas registradas actualmente.")
+            
+            idMascota = int(input("Ingrese el id del cliente de la mascota: ").strip())
+            
+            mascota_a_modificar = next((m for m in cliente._mascotas if m._id == idMascota), None)                    
+                
+            if mascota_a_modificar is None:
+                raise ValueError(f"El cliente {cliente._nombre} no tiene una mascota con el ID {idMascota}. Por favor intente nuevamente.")
+            
+            nuevoNombre = input("Por favor actualice el nombre:").strip() or mascota_a_modificar._nombre            
+            nuevaEspecie = input("Por favor actualice la especie:").strip() or mascota_a_modificar._especie                  
+            nuevaRaza = input("Por favor actualice la raza:").strip() or mascota_a_modificar._raza
                               
-                if not cliente:
-                    raise ValueError(f"No existe un cliente con el ID {idCliente}. Por favor intente nuevamente.")
-                
-                idMascota = int(input("Ingrese el id del cliente de la mascota: ").strip())
-                
-                for i, mascota in enumerate(cliente._mascotas):
-                    if mascota._id == idMascota:
-                        mascota_a_modificar = mascota
-                        indice = i                    
-                    
-                if mascota_a_modificar is None:
-                    raise ValueError(f"El cliente no tiene una mascota con el ID {idMascota}. Por favor intente nuevamente.")
-                
-                nuevoNombre = input("Por favor actualice el nombre:").strip()
-                if not nuevoNombre:
-                    nuevoNombre = mascota_a_modificar._nombre
-                
-                nuevaEspecie = input("Por favor actualice la especie:").strip()   
-                if not nuevaEspecie:
-                    nuevaEspecie = mascota_a_modificar._especie
-                    
-                nuevaRaza = input("Por favor actualice la raza:").strip()   
-                if not nuevaRaza:
-                    nuevaRaza = mascota_a_modificar._raza
-                    
-                nuevaEdad = int(input("Por favor actualice el nombre:").strip())   
-                if not nuevaEdad:
-                    nuevaEdad = mascota_a_modificar._edad
-                    
-                cliente._mascotas[indice] = GestionMascota(idMascota, nuevoNombre, nuevaEspecie, nuevaRaza, nuevaEdad)
-                print("\nVeterinario actualizado exitosamente.") 
-                input("Presione <Enter> para continuar")
-                break                                            
-                
-            except ValueError as e:
-                print(f"\nError: {e}")
+            nuevaEdad = input("Por favor actualice la edad: ").strip()
+            nuevaEdad = int(nuevaEdad) if nuevaEdad.isdigit() else mascota_a_modificar._edad   
+            
+            mascota_a_modificar._nombre = nuevoNombre
+            mascota_a_modificar._especie = nuevaEspecie
+            mascota_a_modificar._raza = nuevaRaza
+            mascota_a_modificar._edad = nuevaEdad
+            
+            print("\nMascota actualizada exitosamente.") 
+            input("Presione <Enter> para continuar")                                            
+            
+        except ValueError as e:
+            print(f"\nError: {e}")
+            input("Presione <Enter> para continuar")
     
     
     @staticmethod
     def programarCita(clientes, veterinarios):
-        while True:
-            print()
-            print("#"*30)
-            print("MODULO DE PROGRAMACIÓN DE CITAS")
-            print("#"*30)
-            
-            try:
-                idCliente = int(input("Ingrese el id del cliente dueño de la mascota: ").strip())
-                idMascota = int(input("Ingrese el id de la mascota: ").strip())
-            
-                cliente = next((c for c in clientes if c._id == idCliente), None)
-                if not cliente:
-                    raise ValueError(f"No existe un cliente con el ID {idCliente}. Por favor intente nuevamente.")
-            
-                mascota = next((m for m in cliente._mascotas if m._id == idMascota), None)
-                if not mascota:
-                    raise ValueError(f"El cliente no tiene una mascota con el ID {idMascota}. Por favor intente nuevamente.")
-            
-                while True:
-                    try:
-                        fecha = input("\nIngrese la fecha de la cita (AAAA-MM-DD): ").strip()
-                        hora = input("Ingrese la hora de la cita (HH:MM): ").strip()
-                        servicio = input("Ingrese el servicio deseado (Consulta, Vacunación, Cirugia, etc): ").strip()
-                        idVeterinario = int(input("Ingrese el id del veterinario a agendar: ").strip())
-                    
-                        veterinario = next((v for v in veterinarios if v._id == idVeterinario), None)
-                    
-                        if not fecha or not hora or not servicio:
-                            raise ValueError("Todos los campos son obligatorios. Por favor intente de nuevo.")
-                    
-                        if not veterinario:
-                            raise LookupError(f"No existe un veterinario con el ID {idVeterinario}. Por favor intente de nuevo.")
-                    
-                        if servicio != veterinario._especialidad:
-                            raise ValueError(f"El veterinario {veterinario._nombre} no atiende el servicio seleccionado. Por favor intente de nuevo.")
-                    
-                        break
-                    except ValueError as e:
-                        print(f"\nError: {e}")
-                    except LookupError as e:
-                        print(f"\nError: {e}")
-            
-            
-            
-                datetime.strptime(fecha, "%Y-%m-%d")
-                datetime.strptime(hora, "%H:%M")
-            
-                cita = GestionCita(fecha, hora, servicio, veterinario._nombre)
-                mascota.agregarAlHistorial(cita)
-                print("\n¡Cita agregada exitosamente!")
-                break
+        print()
+        print("#"*30)
+        print("MODULO DE PROGRAMACIÓN DE CITAS")
+        print("#"*30)
         
-            except ValueError as e:
-                print(f"\nError: {e}")
+        try:
+            idCliente = int(input("Ingrese el id del cliente dueño de la mascota: ").strip())
+        
+            cliente = next((c for c in clientes if c._id == idCliente), None)
+            if not cliente:
+                raise ValueError(f"No existe un cliente con el ID {idCliente}. Por favor intente nuevamente.")
+            
+            if not cliente._mascotas:
+                raise ValueError(f"El cliente {cliente._nombre} no tiene mascotas registradas actualmente.")
+            
+            idMascota = int(input("Ingrese el id de la mascota: ").strip())        
+            mascota = next((m for m in cliente._mascotas if m._id == idMascota), None)
+            
+            if not mascota:
+                raise ValueError(f"El cliente {cliente._nombre} no tiene una mascota con el ID {idMascota}. Por favor intente nuevamente.")
+        
+            while True:
+                try:
+                    fecha = input("\nIngrese la fecha de la cita (AAAA-MM-DD): ").strip()
+                    hora = input("Ingrese la hora de la cita (HH:MM): ").strip()
+                    servicio = input("Ingrese el servicio deseado (Consulta, Vacunación, Cirugia, etc): ").strip()
+                    idVeterinario = int(input("Ingrese el id del veterinario a agendar: ").strip())
+                
+                    if not fecha or not hora or not servicio:
+                        raise ValueError("Todos los campos son obligatorios. Por favor intente de nuevo.")
+                    
+                    datetime.strptime(fecha, "%Y-%m-%d")
+                    datetime.strptime(hora, "%H:%M")
+                    
+                    veterinario = next((v for v in veterinarios if v._id == idVeterinario), None)
+                
+                    if not veterinario:
+                        raise ValueError(f"No existe un veterinario con el ID {idVeterinario}. Por favor intente de nuevo.")
+                
+                    if servicio != veterinario._especialidad:
+                        raise ValueError(f"El veterinario {veterinario._nombre} no atiende el servicio seleccionado. Por favor intente de nuevo.")
+                
+                    break
+                except ValueError as e:
+                    print(f"\nError: {e}")
+        
+            cita = GestionCita(fecha, hora, servicio, veterinario._nombre)
+            mascota.agregarAlHistorial(cita)
+            print("\n¡Cita agregada exitosamente!")
+            input("Presione <Enter> para continuar")
+    
+        except ValueError as e:
+            print(f"\nError: {e}")
+            input("Presione <Enter> para continuar")
     
     @staticmethod        
     def actualizarCita(clientes, veterinarios):
