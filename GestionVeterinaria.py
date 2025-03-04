@@ -198,7 +198,7 @@ class GestionVeterinaria:
                 especialidad = input("Ingrese la especialidad del veterinario: ").strip().upper()
             
                 if not nombre or not telefono or not direccion or not especialidad:
-                    raise ValueError("\nTodos los campos son obligatorios. Por favor intente de nuevo")
+                    raise ValueError("Todos los campos son obligatorios. Por favor intente de nuevo")
 
                 veterinario = Veterinario(id, nombre, telefono, direccion, especialidad)
                 veterinarios.append(veterinario)
@@ -207,7 +207,7 @@ class GestionVeterinaria:
                 break
                 
             except ValueError as e:
-                print(f"Error: {e}")
+                print(f"\nError: {e}")
                 input("Presione <Enter> para continuar")
                 
                 
@@ -258,8 +258,8 @@ class GestionVeterinaria:
         nuevaDireccion = input("Por favor actualice la direccion: ").strip() or veterinario_a_modificar._direccion
                 
         veterinario_a_modificar._nombre = nuevoNombre
-        veterinario_a_modificar._tele = nuevoNombre
-        veterinario_a_modificar._nombre = nuevoNombre
+        veterinario_a_modificar._telefono = nuevoTelefono
+        veterinario_a_modificar._direccion = nuevaDireccion
         
         print("\nVeterinario actualizado exitosamente.") 
         input("Presione <Enter> para continuar")
@@ -287,12 +287,13 @@ class GestionVeterinaria:
 
                 while True:
                     try:
-                        nroMascotas = int(input("¿Cuantas mascotas desea registrar? (Puede registrar maximo 3 por intento): ").strip())
+                        nroMascotas = int(input("\n¿Cuantas mascotas desea registrar? (Puede registrar maximo 3 por intento): ").strip())
                         if nroMascotas <= 0 or nroMascotas > 3:
                             raise ValueError(f"El número ingresado no es valido. Por favor intente de nuevo.")
                         break
                     except ValueError as e:
-                        print(f"Error: {e}")                
+                        print(f"Error: {e}")   
+                        input("Presione <Enter> para continuar")             
 
                 for i in range(nroMascotas):
                     while True:
@@ -345,16 +346,16 @@ class GestionVeterinaria:
             if not cliente._mascotas:
                 raise ValueError(f"El cliente {cliente._nombre} no tiene mascotas registradas actualmente.")
             
-            idMascota = int(input("Ingrese el id del cliente de la mascota: ").strip())
+            idMascota = int(input("Ingrese el id de la mascota: ").strip())
             
             mascota_a_modificar = next((m for m in cliente._mascotas if m._id == idMascota), None)                    
                 
             if mascota_a_modificar is None:
                 raise ValueError(f"El cliente {cliente._nombre} no tiene una mascota con el ID {idMascota}. Por favor intente nuevamente.")
             
-            nuevoNombre = input("Por favor actualice el nombre:").strip() or mascota_a_modificar._nombre            
-            nuevaEspecie = input("Por favor actualice la especie:").strip() or mascota_a_modificar._especie                  
-            nuevaRaza = input("Por favor actualice la raza:").strip() or mascota_a_modificar._raza
+            nuevoNombre = input("Por favor actualice el nombre: ").strip() or mascota_a_modificar._nombre            
+            nuevaEspecie = input("Por favor actualice la especie: ").strip() or mascota_a_modificar._especie                  
+            nuevaRaza = input("Por favor actualice la raza: ").strip() or mascota_a_modificar._raza
                               
             nuevaEdad = input("Por favor actualice la edad: ").strip()
             nuevaEdad = int(nuevaEdad) if nuevaEdad.isdigit() else mascota_a_modificar._edad   
