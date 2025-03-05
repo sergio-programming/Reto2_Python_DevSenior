@@ -67,7 +67,21 @@ class Cliente(Persona):
                 Especie: {mascota._especie}
                 Raza: {mascota._raza}
                 Edad: {mascota._edad}
+                Historial de Citas:
                 """)
+                
+                if not mascota._historialCitas:
+                    infoCliente += "La mascota no tiene citas registradas actualmente."
+                else:
+                    for i, cita in enumerate(mascota._historialCitas, start=1):
+                        infoCliente += dedent(f"""
+                        Cita # {i}
+                        Fecha: {cita._fecha}
+                        Hora: {cita._hora}
+                        Servicio Asignado: {cita._servicio}
+                        Veterinario Asignado: {cita._veterinario}
+                        """)
+                
         
         return infoCliente
         
@@ -141,7 +155,7 @@ class GestionVeterinaria:
             for cliente in clientes:
                 print(cliente.mostrarInformacion())   
         
-        input("Presione <Enter> para continuar")
+        input("\nPresione <Enter> para continuar")
         
     
     @staticmethod        
@@ -292,7 +306,7 @@ class GestionVeterinaria:
                             raise ValueError(f"El número ingresado no es valido. Por favor intente de nuevo.")
                         break
                     except ValueError as e:
-                        print(f"Error: {e}")   
+                        print(f"\nError: {e}")   
                         input("Presione <Enter> para continuar")             
 
                 for i in range(nroMascotas):
@@ -430,7 +444,7 @@ class GestionVeterinaria:
                     if not servicio:
                         raise ValueError("El campo servicio es obligatorio. Por favor intente de nuevo.")
                     
-                    idVeterinario = int(input("Ingrese el id del veterinario a agendar: ").strip())
+                    idVeterinario = int(input("\nIngrese el id del veterinario a agendar: ").strip())
                     
                     veterinario = next((v for v in veterinarios if v._id == idVeterinario), None)
                     
@@ -531,7 +545,7 @@ class GestionVeterinaria:
                     if not nuevoServicio:
                         raise ValueError("El campo servicio es obligatorio. Por favor intente de nuevo.")
                     
-                    idVeterinario = int(input("Ingrese el id del veterinario a agendar: ").strip())
+                    idVeterinario = int(input("\nIngrese el id del veterinario a agendar: ").strip())
                 
                     veterinario = next((v for v in veterinarios if v._id == idVeterinario), None)
             
