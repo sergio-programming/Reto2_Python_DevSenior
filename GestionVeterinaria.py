@@ -62,13 +62,14 @@ class Cliente(Persona):
         else:
             for i, mascota in enumerate(self._mascotas, start=1):
                 infoCliente += dedent(f"""
+                                      
                 Mascota # {i}
                 Nombre de la mascota: {mascota._nombre}
                 Especie: {mascota._especie}
                 Raza: {mascota._raza}
                 Edad: {mascota._edad}
                 Historial de Citas:
-                """)
+                """) + "\n"
                 
                 if not mascota._historialCitas:
                     infoCliente += "La mascota no tiene citas registradas actualmente."
@@ -80,7 +81,7 @@ class Cliente(Persona):
                         Hora: {cita._hora}
                         Servicio Asignado: {cita._servicio}
                         Veterinario Asignado: {cita._veterinario}
-                        """)
+                        """) + "\n"
                 
         
         return infoCliente
